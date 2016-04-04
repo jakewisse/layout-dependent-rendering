@@ -1,0 +1,40 @@
+body{
+	font-family: 'Palatino'
+}
+
+ul.tag-list > li + li {
+	margin-left: 8px;
+}
+
+ul.tag-list > li {
+}
+
+ul.tag-list > li {
+	position: relative;
+	display: inline-block;
+	border: 1px solid grey;
+	border-radius: 6px;
+	padding: 4px;
+	padding-right: 24px;
+	min-width: 36px;
+	text-align: center;
+}
+
+ul.master-tag-list > li {
+	background: lightblue;
+}
+
+
+ul.overflow-tag-list > li {
+	font-style: italic;
+	color: grey;
+	background: lightgray;
+}
+
+.tag-close {
+	position: absolute;
+	right: 3px;
+	top: 5px;
+	height: 16px;
+	cursor: pointer;
+}
