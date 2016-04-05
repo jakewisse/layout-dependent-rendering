@@ -6,4 +6,4 @@ const TagCollection = Backbone.Collection.extend({
 
 });
 
-export default window.TagCollection = new TagCollection();
+export default new TagCollection();

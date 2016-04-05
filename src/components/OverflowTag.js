@@ -4,7 +4,7 @@ import TagCollection from '../models/TagCollection';
 class OverflowTag extends Component {
 
   /**
-   * Same remove click handler from the Tag component
+   * Same remove click handler from the Tag component. Any time a tag is removed, we need to recalculate.
    */
   _handleRemoveClick = () => {
     const removed = TagCollection.remove(this.props.tag.id, { silent: true });

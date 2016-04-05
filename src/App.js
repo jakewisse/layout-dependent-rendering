@@ -3,7 +3,6 @@ import $ from 'jquery';
 import TagAdder from './components/TagAdder';
 import TagList from './components/TagList';
 import OverflowTagList from './components/OverflowTagList';
-import Readme from './components/Readme';
 import TagCollection from './models/TagCollection';
 import connectBB from './hoc/connectBB';
 
@@ -18,8 +17,6 @@ class App extends Component {
     return (
       <div>
         <h1>Rendering content based on view constraints</h1>
-        <Readme />
-        <hr />
         <TagAdder />
         <TagList tags={tags} />
         <hr />
@@ -32,6 +29,11 @@ class App extends Component {
     $(window).off('resize', this._onResize);
   }
 
+  /**
+   * Window resize handler. All we need to do is set `overflow` to false, so
+   * that everything will be rendered in the the main TagList, which will
+   * cause a recalculation.
+   */
   _onResize = () => {
     TagCollection.reset(TagCollection.models.map(m => ({ ...m.attributes, overflow: false })));
   };

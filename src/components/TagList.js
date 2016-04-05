@@ -9,7 +9,13 @@ class TagList extends Component {
 
   constructor(props) {
     super(props);
-    this._tags = [];
+
+    /**
+     * An object of refs containing measurable DOM elements, stored as a map
+     * from tag ID to jQuery-wrapped <li>.
+     * @type {Object}
+     */
+    this._tags = {};
   }
 
   render() {
@@ -23,49 +29,44 @@ class TagList extends Component {
   }
 
   componentDidMount() {
-    this._removeOldRefs();
     this._measureTags();
   }
 
   componentDidUpdate() {
-    this._removeOldRefs();
     this._measureTags();
   }
 
-  _refSet = (obj) => {
-    const { ref, id } = obj;
-    this._tags.push({
-      $elem: $(ref),
-      id
-    });
-  };
-
   /**
-   * Since the `ref` attribute callback is only invoked when new Tags are
-   * rendered, we need to remove refs that are no longer rendered.
-   * @return {[type]} [description]
+   * A callback passed to the `refSet` prop on Tag. Is invoked each time the
+   * tag's `ref` callback is invoked, with both the reference to the component
+   * instance and the tag's ID. Maintains the state of all TagList Tags and
+   * their DOM nodes. Note that the `ref` prop is called with `null` when a
+   * Component is being unmounted.
+   * @param  {Number} id  The Tag's ID
+   * @param  {HTMLElement} ref A ref to the child Tag's resulting DOM node
    */
-  _removeOldRefs = () => {
-    const mainTagsOnProps = this.props.tags.filter(tag => !tag.overflow);
-    this._tags = this._tags.filter(tag => _.findWhere(mainTagsOnProps, { id: tag.id }));
+  _refSet = (id, ref) => {
+    if (!ref) {
+      delete this._tags[id];
+    } else {
+      this._tags[id] = $(ref);
+    }
   };
 
   /**
    * Measure the layout of each tag to determine what tags should remain
    * rendered here, and which should be rendered in overflow components.
+   * Trigger an update of the Tag state with this knowledge.
    */
   _measureTags = () => {
-    const firstTop = this._tags.length && this._tags[0].$elem.position().top;
-    const notTopIDs = this._tags.map(tag => ({
-      ...tag,
-      top: tag.$elem.position().top
-    })).filter(tag => tag.top !== firstTop).map(obj => obj.id);
+    if (!this.props.tags || !this.props.tags.length) {
+      return;
+    }
 
-    // For each model that doesn't fit in the first row, set an property on
-    // the tag model indicating that it should be in the overflow component.
-    const overflowModels = TagCollection.filter(model => !!~notTopIDs.indexOf(model.id)).forEach(model => {
-      model.set({ overflow: true });
-    });
+    const firstTop = this._tags[this.props.tags[0].id].position().top;
+    Object.keys(this._tags)
+      .filter(id => this._tags[id].position().top !== firstTop)
+      .forEach(id => TagCollection.get(id).set({ overflow: true }));
   };
 
 }

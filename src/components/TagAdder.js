@@ -7,7 +7,7 @@ class TagAdder extends Component {
   render() {
     return (<form onSubmit={this._handleSubmit}>
       <label>
-        <span style={{'marginRight': '10px'}}>Enter a new tag:</span>
+        <span style={{'marginRight': '10px'}}>Add a new tag:</span>
         <input type="text" ref={c => { this._input = c; }} />
       </label>
     </form>);

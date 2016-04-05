@@ -4,14 +4,11 @@ import TagCollection from '../models/TagCollection';
 class Tag extends Component {
 
   /**
-   * Call the `props.refSet` callback if the component instance is defined.
+   * `ref` callback for the `<li>`.
    * @param  {HTMLElement} c
    */
   _refSet = (c) => {
-    c && this.props.refSet && this.props.refSet({
-      ref: c,
-      id: this.props.tag.id
-    });
+    this.props.refSet && this.props.refSet(this.props.tag.id, c);
   };
 
   /**
@@ -19,7 +16,7 @@ class Tag extends Component {
    */
   _handleRemoveClick = () => {
     // Silent to avoid repeated rerenders. We only need to have one event
-    // triggered when done.
+    // triggered.
     const removed = TagCollection.remove(this.props.tag.id, { silent: true });
     TagCollection.reset(TagCollection.models.map(m => ({ ...m.attributes, overflow: false })));
   };

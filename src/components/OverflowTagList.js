@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import OverflowTag from './OverflowTag';
 import TagCollection from '../models/TagCollection';
 
-class TagOverflowList extends Component {
+class OverflowTagList extends Component {
 
   render() {
     const tags = this.props.tags || [];
@@ -15,9 +15,9 @@ class TagOverflowList extends Component {
 
 }
 
-TagOverflowList.displayName = 'TagOverflowList';
-TagOverflowList.propTypes = {
+OverflowTagList.displayName = 'OverflowTagList';
+OverflowTagList.propTypes = {
   tags: PropTypes.array
 };
 
-export default TagOverflowList;
+export default OverflowTagList;
